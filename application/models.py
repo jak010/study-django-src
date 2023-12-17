@@ -11,9 +11,19 @@ class Person(models.Model):
         return self.name
 
 
+class GroupManager(models.Manager):
+
+    def create(self, name: str, members: Person):
+        obj = self.model(name=name)
+        obj.save(force_insert=True, using=self.db)
+        return obj
+
+
 class Group(models.Model):
     name = models.CharField(max_length=128)
     members = models.ManyToManyField(Person, through="Membership")
+
+    objects = GroupManager()
 
     def __str__(self):
         return self.name

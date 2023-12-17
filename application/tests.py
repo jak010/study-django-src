@@ -1,9 +1,9 @@
-import random
-import string
-
-from django.test import TestCase
+# from django.test import TestCase
 
 from application.models import Person
+from django.test.client import Client
+
+from unittest import TestCase
 
 
 # Create your tests here.
@@ -11,9 +11,7 @@ from application.models import Person
 
 class PersonCreateTest(TestCase):
 
-    def test_create_person(self):
-        for _ in range(10):
-            random_name = ''.join(random.choices(string.ascii_lowercase, k=5))
-            person = Person.objects.create(name=random_name)
-
-        assert person.name == "jako"
+    def test_person_create_view(self):
+        client = Client()
+        resp = client.post(path="/api/v1/person")
+        assert resp.status_code == 200
